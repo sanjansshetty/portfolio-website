@@ -173,6 +173,10 @@
   position: relative;
   overflow: hidden;
   padding-top: var(--nav-height);
+  padding-left: 2rem;
+  padding-right: 2rem;
+  gap: 3rem;
+  flex-wrap: wrap;
 }
 
 .hero-bg-effects {
@@ -224,6 +228,8 @@
   text-align: center;
   position: relative;
   z-index: 1;
+  flex: 1 1;
+  max-width: 640px;
   padding: 2rem;
   animation: fadeInUp 1s ease;
 }
@@ -277,8 +283,35 @@
 
 .hero-socials {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.2rem;
   justify-content: center;
+}
+
+.orbit-viewport {
+  flex: 0 1 520px;
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .hero-content {
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .hero-actions,
+  .hero-socials {
+    justify-content: center;
+  }
+
+  .orbit-viewport {
+    margin: 0 auto;
+  }
 }
 
 .hero-socials a {
@@ -945,19 +978,27 @@
 
 
 
-.orbit-viewport {
+ .orbit-viewport {
+  --orbit-viewport: clamp(260px, 70vw, 450px);
+  --orbit-size: calc(var(--orbit-viewport) * 0.78);
+  --orbit-item: clamp(52px, 10vw, 80px);
+  --orbit-radius: calc(var(--orbit-size) * 0.5);
+  --orbit-translate: calc(var(--orbit-radius) - (var(--orbit-item) * 0.55));
+
   position: relative;
-  width: 450px;
-  height: 450px;
+  width: var(--orbit-viewport);
+  height: var(--orbit-viewport);
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .center-text {
   position: absolute;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: clamp(18px, 3.8vw, 28px);
+  font-weight: 700;
   color: #fff;
   letter-spacing: 4px;
   z-index: 2;
@@ -965,8 +1006,8 @@
 
 .orbit {
   position: relative;
-  width: 350px;
-  height: 350px;
+  width: var(--orbit-size);
+  height: var(--orbit-size);
   border-radius: 50%;
   animation: rotateOrbit 25s linear infinite;
 }
@@ -976,18 +1017,18 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80px;
-  height: 80px;
-  margin: -40px;
+  width: var(--orbit-item);
+  height: var(--orbit-item);
+  margin: calc(var(--orbit-item) / -2);
   transform:
-    rotate(calc(40deg * var(--i)))
-    translate(170px)
-    rotate(calc(-40deg * var(--i)));
+    rotate(calc(36deg * var(--i)))
+    translate(var(--orbit-translate))
+    rotate(calc(-36deg * var(--i)));
 }
 
 /* Icon Styling */
 .orbit-item i {
-  font-size: 35px;
+  font-size: clamp(20px, 3.5vw, 35px);
   color: white;
   background: #161b22;
   width: 100%;
@@ -1018,24 +1059,13 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .center-text {
+    letter-spacing: 3px;
+  }
+}
+
+@media (max-width: 480px) {
   .orbit-viewport {
-    width: 300px;
-    height: 300px;
-  }
-
-  .orbit {
-    width: 250px;
-    height: 250px;
-  }
-
-  .orbit-item {
-    transform:
-      rotate(calc(30deg * var(--i)))
-      translate(120px)
-      rotate(calc(-30deg * var(--i)));
-  } 
-
-   .orbit-item i {
-    font-size: 24px;
+    --orbit-viewport: min(92vw, 320px);
   }
 }

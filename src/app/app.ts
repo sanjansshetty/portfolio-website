@@ -44,7 +44,7 @@ export class App implements AfterViewInit {
   protected activeSection = 'home';
 
   // Contact form
-  protected contactForm = {
+  protected contact = {
     name: '',
     email: '',
     message: ''
@@ -202,37 +202,45 @@ export class App implements AfterViewInit {
     sections.forEach((section) => observer.observe(section));
   }
 
-  sendMessage(): void {
-    if (!this.contactForm.name || !this.contactForm.email || !this.contactForm.message) {
+  sendMessage(form: any): void {
+    if (!form || form.invalid) {
+      return;
+    }
+
+    const { name, email, message } = form.value ?? this.contact;
+    if (!name || !email || !message) {
       return;
     }
 
     this.formStatus = 'sending';
 
     const templateParams = {
-      from_name: this.contactForm.name,
-      from_email: this.contactForm.email,
-      message: this.contactForm.message,
+      from_name: name,
+      from_email: email,
+      message,
       to_name: this.name()
     };
 
-    emailjs.send(
-      this.EMAILJS_SERVICE_ID,
-      this.EMAILJS_TEMPLATE_ID,
-      templateParams,
-      this.EMAILJS_PUBLIC_KEY
-    ).then(
-      () => {
-        this.formStatus = 'sent';
-        this.contactForm = { name: '', email: '', message: '' };
-        setTimeout(() => this.formStatus = 'idle', 4000);
-      },
-      (error: any) => {
-        console.error('EmailJS error:', error);
-        this.formStatus = 'error';
-        setTimeout(() => this.formStatus = 'idle', 4000);
-      }
-    );
+    emailjs
+      .send(
+        this.EMAILJS_SERVICE_ID,
+        this.EMAILJS_TEMPLATE_ID,
+        templateParams,
+        this.EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        () => {
+          this.formStatus = 'sent';
+          this.contact = { name: '', email: '', message: '' };
+          form.resetForm();
+          setTimeout(() => (this.formStatus = 'idle'), 4000);
+        },
+        (error: any) => {
+          console.error('EmailJS error:', error);
+          this.formStatus = 'error';
+          setTimeout(() => (this.formStatus = 'idle'), 4000);
+        }
+      );
   }
 
   downloadResume(): void {

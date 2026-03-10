@@ -31,7 +31,7 @@ export class App implements AfterViewInit {
   protected readonly email = signal('sanjansshetty2000@gmail.com');
   protected readonly githubUrl = signal('https://github.com/yourusername');
   protected readonly linkedinUrl = signal('https://www.linkedin.com/in/sanjan-s-shetty-b4365a1b4/');
-  protected readonly resumePath = signal('Sanjan_Resume.pdf');
+  protected readonly resumePath = signal('Sanjan_Exp_Resume.pdf');
 
   // ===== EmailJS Config (Replace with your IDs) =====
   private readonly EMAILJS_SERVICE_ID = 'service_6b2g0ei';

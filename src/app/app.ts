@@ -1,4 +1,4 @@
-import { Component, signal, HostListener, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, signal, HostListener, ElementRef, ViewChild, AfterViewInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,11 +13,40 @@ declare var emailjs: any;
 export class App implements AfterViewInit {
   currentDateTime: Date = new Date();
   private intervalId: any;
+  form = signal({
+    fullName: '',
+    email: '',
+    message: ''
+  });
 
   ngOnInit(): void {
     this.intervalId = setInterval(() => {
       this.currentDateTime = new Date();
     }, 1000);
+  }
+
+  isValid = computed(() => {
+    const f = this.form();
+    return (
+      f.fullName.trim().length > 2 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email) &&
+      f.message.trim().length > 10
+    );
+  });
+
+  updateField(key: string, value: any) {
+    this.form.update(f => ({
+      ...f,
+      [key]: value
+    }));
+  }
+
+  resetForm() {
+    this.form.set({
+      fullName: '',
+      email: '',
+      message: ''
+    });
   }
 
   ngOnDestroy(): void {
@@ -31,7 +60,7 @@ export class App implements AfterViewInit {
   protected readonly email = signal('sanjansshetty2000@gmail.com');
   protected readonly githubUrl = signal('https://github.com/yourusername');
   protected readonly linkedinUrl = signal('https://www.linkedin.com/in/sanjan-s-shetty-b4365a1b4/');
-  protected readonly resumePath = signal('Sanjan_Exp_Resume.pdf');
+  protected readonly resumePath = signal('Sanjan_S_Shetty_Resume.pdf');
 
   // ===== EmailJS Config (Replace with your IDs) =====
   private readonly EMAILJS_SERVICE_ID = 'service_6b2g0ei';
@@ -43,12 +72,7 @@ export class App implements AfterViewInit {
   protected mobileMenuOpen = false;
   protected activeSection = 'home';
 
-  // Contact form
-  protected contact = {
-    name: '',
-    email: '',
-    message: ''
-  };
+  // Contact form status
   protected formStatus: 'idle' | 'sending' | 'sent' | 'error' = 'idle';
 
   // About
@@ -202,24 +226,22 @@ export class App implements AfterViewInit {
     sections.forEach((section) => observer.observe(section));
   }
 
-  sendMessage(form: any): void {
-    if (!form || form.invalid) {
+  sendMessage(): void {
+    if (!this.isValid()) {
       return;
     }
 
-    const { name, email, message } = form.value ?? this.contact;
-    if (!name || !email || !message) {
-      return;
-    }
-
+    const formData = this.form();
+    console.log(formData);
     this.formStatus = 'sending';
 
     const templateParams = {
-      from_name: name,
-      from_email: email,
-      message,
+      from_name: formData.fullName,
+      from_email: formData.email,
+      message: formData.message,
       to_name: this.name()
     };
+    console.log(templateParams);
 
     emailjs
       .send(
@@ -231,8 +253,7 @@ export class App implements AfterViewInit {
       .then(
         () => {
           this.formStatus = 'sent';
-          this.contact = { name: '', email: '', message: '' };
-          form.resetForm();
+          this.resetForm();
           setTimeout(() => (this.formStatus = 'idle'), 4000);
         },
         (error: any) => {
@@ -246,7 +267,7 @@ export class App implements AfterViewInit {
   downloadResume(): void {
     const link = document.createElement('a');
     link.href = this.resumePath();
-    link.download = 'Sanjan_Resume.pdf';
+    link.download = 'Sanjan_S_Shetty_Resume.pdf';
     link.click();
   }
 }

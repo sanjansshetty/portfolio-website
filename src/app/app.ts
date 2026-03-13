@@ -103,35 +103,40 @@ export class App implements AfterViewInit {
       title: 'ClearTrail',
       subtitle: 'Enterprise Application',
       points: [
-        'Worked on a large-scale web application.',
-        'Responsible for frontend development.',
-        'Key contributor owning modules end-to-end.'
+        'Worked on a defense monitoring platform designed to track battlefield assets in real time.',
+        'Built a Micro-Frontend architecture for modular and scalable frontend development.',
+        'Implemented real-time data streaming using RxJS and WebSockets.',
+        'Developed dashboards to track assets such as drones and CCTV units.',
+        'Displayed live asset location, operational status, and condition updates on the UI.',
+        'Enabled defense teams to monitor critical asset data efficiently through a responsive interface.'
       ]
     },
     {
       title: 'Asend Learning',
       subtitle: 'Enterprise Web Application',
       points: [
-        'Built scalable frontend components.',
+        'Worked on a large-scale learning and assessment platform used by nursing students and faculty.',
         'Integrated RESTful APIs.',
-        'Collaborated with cross-functional teams.'
+        'Developed frontend modules using Angular, TypeScript, HTML, and CSS to support learning workflows.',
+        'Contributed to improving UI usability, component reusability, and application performance',
+        'Collaborated with backend and design teams to deliver a seamless user experience.'
       ]
     }
   ];
 
-  protected readonly personalProjects = [
-    {
-      title: 'Personal Portfolio Website',
-      subtitle: 'Full Stack Developer',
-      githubLink: 'https://github.com/yourusername/portfolio',
-      points: [
-        'Responsive design for various devices.',
-        'Integrated animations and interactive elements.',
-        'Showcased skills, projects, and experience effectively.',
-        'Dark theme with modern UI.'
-      ]
-    }
-  ];
+  // protected readonly personalProjects = [
+  //   {
+  //     title: 'Personal Portfolio Website',
+  //     subtitle: 'Full Stack Developer',
+  //     githubLink: 'https://github.com/yourusername/portfolio',
+  //     points: [
+  //       'Responsive design for various devices.',
+  //       'Integrated animations and interactive elements.',
+  //       'Showcased skills, projects, and experience effectively.',
+  //       'Dark theme with modern UI.'
+  //     ]
+  //   }
+  // ];
 
   // Experience
   protected readonly experiences = [

@@ -1,17 +1,21 @@
-import { Component, signal, HostListener, ElementRef, ViewChild, AfterViewInit, computed } from '@angular/core';
+import { Component, signal, HostListener, ElementRef, ViewChild, AfterViewInit, computed, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CapatilizePipe } from './capatilize-pipe';
 
 declare var emailjs: any;
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CapatilizePipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements AfterViewInit {
   currentDateTime: Date = new Date();
+  name: string = 'sanjan s shetty';
+  fullNameTouched = signal(false);
+  mailTouched = signal(false);
   private intervalId: any;
   form = signal({
     fullName: '',
@@ -25,6 +29,28 @@ export class App implements AfterViewInit {
     }, 1000);
   }
 
+  fullNameError = computed(() => {
+    if (this.fullNameTouched() && this.form().fullName.length <= 0) {
+      return 'Name is required';
+    }
+    else if (this.fullNameTouched() && this.form().fullName.length < 3) {
+      return 'Name must be at least 3 characters long';
+    }
+
+    return null;
+  });
+
+  mailError=computed(()=>{
+    if(this.mailTouched() && !this.form().email.includes('@') ){
+      return 'Email is required';
+    }
+    else if(this.mailTouched() && this.form().email.startsWith('@')){
+      return 'Please Enter Valid Mail';
+    }
+    return null;
+  })
+
+
   isValid = computed(() => {
     const f = this.form();
     return (
@@ -33,6 +59,12 @@ export class App implements AfterViewInit {
       f.message.trim().length > 10
     );
   });
+
+  onKeyDown(event: KeyboardEvent) {
+    if (/\d/.test(event.key)) {
+      event.preventDefault(); // block number input
+    }
+  }
 
   updateField(key: string, value: any) {
     this.form.update(f => ({
@@ -53,7 +85,7 @@ export class App implements AfterViewInit {
     clearInterval(this.intervalId);
   }
   // ===== PERSONALIZE THESE =====
-  protected readonly name = signal('Sanjan S Shetty');
+  // protected readonly name = signal('Sanjan S Shetty');
   protected readonly role = signal('Front End Developer');
   protected readonly heroTagline = signal("Frontend Engineer Building Performant, Accessible & Maintainable Web Applications. Thanks for visiting my portfolio! Happy coding..!");
   protected readonly phone = signal('+91 7259311928');
@@ -154,7 +186,7 @@ export class App implements AfterViewInit {
         'Improved code quality through Jasmine/Karma unit testing (80%+ coverage) and leveraged AI-assisted development (GitHub Copilot) with structured prompt engineering and validation practices to ensure secure, production-ready code'
       ]
     },
-     {
+    {
       title: 'Happiest Minds Technology',
       location: 'Bangalore, India',
       period: 'Aug 2022 - Oct 2025',
@@ -173,8 +205,10 @@ export class App implements AfterViewInit {
   protected readonly education = [
     {
       title: 'Bachelor of Engineering',
-      location: 'Your University • City',
+      location: 'Vidyavardhaka College Of Engineering • Mysore',
+      university: 'Visveshwaraya Technological University',
       period: '2018 - 2022',
+      CGPA: '8.6 CGPA',
       type: 'education',
       icon: 'fa-solid fa-graduation-cap',
       points: [
@@ -191,7 +225,7 @@ export class App implements AfterViewInit {
     { label: 'Skills', href: 'skills' },
     { label: 'Projects', href: 'projects' },
     { label: 'Experience', href: 'experience' },
-    { label: 'Education', href: 'education'},
+    { label: 'Education', href: 'education' },
     { label: 'Contact', href: 'contact' }
   ];
 
@@ -244,7 +278,7 @@ export class App implements AfterViewInit {
       from_name: formData.fullName,
       from_email: formData.email,
       message: formData.message,
-      to_name: this.name()
+      to_name: this.name
     };
     console.log(templateParams);
 

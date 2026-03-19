@@ -2,7 +2,7 @@
 <nav class="navbar" [class.scrolled]="isScrolled">
   <div class="nav-container">
     <div class="logo"><img src="assets/logo.png" alt="logo" class="logo-image">
-      <div class="title"><span class="logo-text">{{name()}}</span><span class="logo-subtext">Front End
+      <div class="title"><span class="logo-text">{{name | capatilize}}</span><span class="logo-subtext">Front End
           Developer</span></div>
     </div>
 
@@ -29,12 +29,12 @@
   </div>
   <div class="hero-content">
     <p class="hero-greeting">Hello, I'm</p>
-    <h1 class="hero-name">{{ name() }}</h1>
+    <h1 class="hero-name">{{ name | capatilize }}</h1>
     <h2 class="hero-role">{{ role() }}</h2>
     <p class="hero-tagline">{{ heroTagline() }}</p>
     <div class="hero-actions">
       <button class="btn btn-primary" (click)="scrollTo('contact')">
-        <i class="fa-solid fa-paper-plane"></i> Contact Me
+        <i class="fa-solid fa-paper-plane"></i> Get In Touch
       </button>
       <button class="btn btn-outline" (click)="downloadResume()">
         <i class="fa-solid fa-download"></i> Resume
@@ -223,9 +223,16 @@
         </div>
         <div class="timeline-content">
           <div class="timeline-header">
-            <h4>{{ edu.title }}</h4>
+            <h3>{{ edu.title }}</h3>
             <span class="timeline-period">{{ edu.period }}</span>
+            
           </div>
+          <div class="institution-details">
+            <h4 class="university-detail">{{edu.university}}</h4>
+            <span class="score-percentage">{{edu.CGPA}}</span>
+
+          </div>
+          
           <span class="timeline-location">
             <i class="fa-solid fa-location-dot"></i> {{ edu.location }}
           </span>
@@ -245,7 +252,7 @@
 <section id="contact" class="section contact-section">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Contact Me</h2>
+      <h2 class="section-title">Get In Touch</h2>
       <p class="section-subtitle">Have a question or want to work together? Feel free to reach out!</p>
     </div>
 
@@ -277,43 +284,37 @@
       <form class="contact-form" (ngSubmit)="sendMessage()">
         <div class="form-group">
           <label for="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            [value]="form().fullName"
-            (input)="updateField('fullName', $any($event.target).value)"
-            placeholder="Your Name"
-          />
+          <input type="text" id="name" [value]="form().fullName"
+          (keydown)="onKeyDown($event)"
+            (input)="updateField('fullName', $any($event.target).value)" (blur)="fullNameTouched.set(true)"
+            placeholder="Enter your Name" />
+          <div class="error-message" *ngIf="fullNameError()">
+            {{ fullNameError() }}
+          </div>
         </div>
+
         <div class="form-group">
           <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            [value]="form().email"
-            (input)="updateField('email', $any($event.target).value)"
-            placeholder="your.email@example.com"
-          />
+          <input type="email" id="email" [value]="form().email"
+            (input)="updateField('email', $any($event.target).value)" (blur)="mailTouched.set(true)" placeholder="Enter the Mail Id" />
+           <div class="error-message" *ngIf="mailError()">
+            {{ mailError() }}
+          </div>
         </div>
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea
-            id="message"
-            [value]="form().message"
-            (input)="updateField('message', $any($event.target).value)"
-            placeholder="Write your message here..."
-            rows="5"
-          ></textarea>
+          <textarea id="message" [value]="form().message" (input)="updateField('message', $any($event.target).value)"
+            placeholder="Write your message here" rows="5"></textarea>
         </div>
         <button type="submit" class="btn btn-primary btn-full" [disabled]="!isValid() || formStatus === 'sending'">
           @if (formStatus === 'sending') {
-            <i class="fa-solid fa-spinner fa-spin"></i> Sending...
+          <i class="fa-solid fa-spinner fa-spin"></i> Sending...
           } @else if (formStatus === 'sent') {
-            <i class="fa-solid fa-check"></i> Message Sent!
+          <i class="fa-solid fa-check"></i> Message Sent!
           } @else if (formStatus === 'error') {
-            <i class="fa-solid fa-exclamation-triangle"></i> Failed. Try Again.
+          <i class="fa-solid fa-exclamation-triangle"></i> Failed. Try Again.
           } @else {
-            <i class="fa-solid fa-paper-plane"></i> Send Message
+          <i class="fa-solid fa-paper-plane"></i> Send Message
           }
         </button>
       </form>
@@ -330,7 +331,8 @@
       <a [href]="'mailto:' + email()"><i class="fa-solid fa-envelope"></i></a>
     </div>
 
-    <p>&copy; {{ currentDateTime | date:'fullDate' }}. All rights reserved. Designed and Developed by {{ name() }}</p>
+    <p>&copy; {{ currentDateTime | date:'fullDate' }}. All rights reserved. Designed and Developed by {{ name |
+      capatilize }}</p>
 
   </div>
 </footer>

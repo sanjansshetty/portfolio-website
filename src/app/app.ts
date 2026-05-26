@@ -87,7 +87,7 @@ export class App implements AfterViewInit {
   // ===== PERSONALIZE THESE =====
   // protected readonly name = signal('Sanjan S Shetty');
   protected readonly role = signal('Front End Developer');
-  protected readonly heroTagline = signal("Frontend Engineer Building Performant, Accessible & Maintainable Web Applications. Thanks for visiting my portfolio! Happy coding..!");
+  protected readonly heroTagline = signal("Frontend Engineer Building Optimized, Accessible & Maintainable Web Applications. Thanks for visiting my portfolio! Happy coding..!");
   protected readonly phone = signal('+91 7259311928');
   protected readonly email = signal('sanjansshetty2000@gmail.com');
   protected readonly githubUrl = signal('https://github.com/yourusername');
@@ -127,6 +127,8 @@ export class App implements AfterViewInit {
     { name: 'Databases', description: 'MySQL and MongoDB for Data Management.', icon: 'fa-solid fa-database', color: '#336791' },
     { name: 'Git & Gitlab', description: 'Version Control, CI/CD, and Collaboration.', icon: 'fa-brands fa-git-alt', color: '#f05032' },
     { name: 'Docker & Kubernetes', description: 'Containerization and scalable deployments.', icon: 'fa-brands fa-docker', color: '#2496ed' },
+    { name: 'CI/CD', description: 'Continuous Integration and Continuous Deployment.', icon: 'fa-solid fa-rocket', color: '#0078d4' },
+    { name: 'Azure', description: 'Cloud Platform for Hosting and Deployment.', icon: 'fa-brands fa-microsoft', color: '#0078d4' }
   ];
 
   // Projects
@@ -175,7 +177,7 @@ export class App implements AfterViewInit {
     {
       title: 'Advayan Technology Private Limited',
       location: 'Bangalore, India',
-      period: 'Nov 2025 - Present',
+      period: 'Nov 2025 - March 2026',
       type: 'work',
       icon: 'fa-solid fa-briefcase',
       points: [
